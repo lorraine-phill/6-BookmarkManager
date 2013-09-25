@@ -1,0 +1,36 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Lorraine's Bookmark Manager</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <link type="image/x-icon" href="./favicon.ico" rel="shortcut icon">
+</head>
+
+<body> 
+                <h1>Please add a link </h1>
+
+	 <ul>
+        <% @links.each do |link| %>
+        <li><a href="<%= link.url %>"><%= link.title %></a></li>
+         <% end %>
+    </ul>
+
+        <div id="new-link">
+
+        <form action="/links" method="post">
+            Url: <input type="text" name="url">
+            Title: <input type="text" name="title">
+            Tags: <input type="text" name="tags">
+            <input type="submit" value="Add link">
+        </form>
+
+    </div>
+    
+</body>
+</html>
