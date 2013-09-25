@@ -8,10 +8,9 @@ require 'data_mapper'
     DataMapper.setup(:default, "postgres://localhost/bookmark_manager_#{env}")
     require './lib/link' # this needs to be done after datamapper is initialised
     require './lib/tag'
-    # After declaring your models, you should finalise them
-    DataMapper.finalize
-    # However, how database tables don't exist yet. Let's tell datamapper to create them
-    DataMapper.auto_upgrade!
+    DataMapper.finalize # After declaring your models, you should finalise them
+    DataMapper.auto_upgrade! # However, how database tables don't exist yet. Let's tell datamapper to create them
+
 
 
 class BookmarkManager < Sinatra::Base
@@ -23,22 +22,21 @@ class BookmarkManager < Sinatra::Base
     erb :index
   end
 
-   post '/links' do
+  post '/links' do
       url = params["url"]
       title = params["title"]
-          tags = params["tags"].split(" ").map do |tag|
-
-      # this will either find this tag or create
-
-      # it if it doesn't exist already
-
+      tags = params["tags"].split(" ").map do |tag| # this will either find this tag or create
       Tag.first_or_create(:text => tag)
-
-    end
-
+      end
       Link.create(:url => url, :title => title, :tags => tags)      
       redirect to('/')
-    end
+  end
+
+  get '/tags/:text' do
+    tag = Tag.first(:text => params[:text])
+    @links = tag ? tag.links : []
+    erb :index
+  end
 
   # start the server if ruby file executed directly
   run! if app_file == $0
