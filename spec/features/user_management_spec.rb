@@ -9,13 +9,6 @@
         expect(User.first.email).to eq("alice@example.com")        
       end
 
-      # def sign_up(email = "alice@example.com", password = "oranges!")
-      #   visit '/users/new'
-      #   fill_in :email, :with => email
-      #   fill_in :password, :with => password
-      #   click_button "Sign up"
-      # end
-
         scenario "with a password that doesn't match" do
         lambda { sign_up('a@a.com', 'pass', 'wrong') }.should change(User, :count).by(0)    
       end
@@ -28,7 +21,12 @@
         fill_in :password, :with => password
         fill_in :password_confirmation, :with => password_confirmation
         click_button "Sign up"
+      end
 
+      scenario "with a password that doesn't match" do
+        lambda { sign_up('a@a.com', 'pass', 'wrong') }.should change(User, :count).by(0) 
+        expect(current_path).to eq('/users')   
+        expect(page).to have_content("Sorry, your passwords don't match")
       end
 
     end

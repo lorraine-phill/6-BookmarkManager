@@ -10,6 +10,7 @@ source 'https://rubygems.org'
 	gem 'guard-rspec'
 	gem 'terminal-notifier-guard'
 	gem 'bcrypt-ruby'
+	gem 'rack-flash3'
 
 
 group :development, :test do
