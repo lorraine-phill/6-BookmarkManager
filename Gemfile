@@ -9,6 +9,7 @@ source 'https://rubygems.org'
 	gem 'guard-cucumber'
 	gem 'guard-rspec'
 	gem 'terminal-notifier-guard'
+	gem 'bcrypt-ruby'
 
 
 group :development, :test do

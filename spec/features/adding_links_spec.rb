@@ -23,13 +23,6 @@
         end     
       end
 
-      # def add_link(url, title)
-      #     within('#new-link') do
-      #     fill_in 'url', :with => url
-      #     fill_in 'title', :with => title
-      #     click_button 'Add link'
-      #   end 
-
         scenario "with a few tags" do
         visit "/"
         add_link("http://www.makersacademy.com/", 
@@ -38,8 +31,6 @@
         link = Link.first
         expect(link.tags.map(&:text)).to include("education")
         expect(link.tags.map(&:text)).to include("ruby")
-        # expect(link.tags.map(&:text)).to include("education")   
-        # expect(link.tags.map(&:text)).to include("ruby")
       end
 
     end

@@ -2,19 +2,27 @@ require 'sinatra/base'
 require 'sinatra'
 require 'data_mapper'
 
+
  env = ENV["RACK_ENV"] || "development"
     # we're telling datamapper to use a postgres database on localhost. The name will be "bookmark_manager_test" or "bookmark_manager_development" depending on the environment
-
     DataMapper.setup(:default, "postgres://localhost/bookmark_manager_#{env}")
     require './lib/link' # this needs to be done after datamapper is initialised
     require './lib/tag'
+    require './lib/user'
     DataMapper.finalize # After declaring your models, you should finalise them
     DataMapper.auto_upgrade! # However, how database tables don't exist yet. Let's tell datamapper to create them
 
-
-
 class BookmarkManager < Sinatra::Base
 
+enable :sessions
+set :session_secret, 'super secret'
+
+
+  helpers do
+      def current_user    
+        @current_user ||=User.get(session[:user_id]) if session[:user_id]
+      end
+  end
   set :views, File.join(File.dirname(__FILE__), '..', 'views')
   
   get '/' do
@@ -25,9 +33,7 @@ class BookmarkManager < Sinatra::Base
   post '/links' do
       url = params["url"]
       title = params["title"]
-      tags = params["tags"].split(" ").map do |tag| # this will either find this tag or create
-      Tag.first_or_create(:text => tag)
-      end
+      tags = params["tags"].split(" ").map{|tag| Tag.first_or_create(:text => tag)}
       Link.create(:url => url, :title => title, :tags => tags)      
       redirect to('/')
   end
@@ -36,6 +42,23 @@ class BookmarkManager < Sinatra::Base
     tag = Tag.first(:text => params[:text])
     @links = tag ? tag.links : []
     erb :index
+  end
+
+  get '/users/new' do
+    erb :"users/new"
+  end
+
+  # post '/users' do
+  #     User.create(:email => params[:email], 
+  #                 :password => params[:password])
+  #     redirect to('/')
+  # end
+
+  post '/users' do
+      user = User.create(:email => params[:email], 
+                         :password => params[:password])  
+      session[:user_id] = user.id
+      redirect to('/')
   end
 
   # start the server if ruby file executed directly
