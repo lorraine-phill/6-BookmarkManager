@@ -9,13 +9,9 @@ require_relative 'models/user'
 require_relative 'helpers/application'
 require_relative 'data_mapper_setup'
 
-# class BookmarkManager < Sinatra::Base
-
 enable :sessions
 set :session_secret, 'super secret'
 
-# set :views, File.join(File.dirname(__FILE__), '..', 'views')
-  
   get '/' do
   	@links = Link.all
     erb :index
@@ -77,3 +73,10 @@ set :session_secret, 'super secret'
       erb :"sessions/new"
     end
   end
+
+delete '/sessions' do
+    flash[:notice] = "Good bye!"
+    session[:user_id] = nil
+    redirect to('/')
+end
+
