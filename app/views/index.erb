@@ -8,7 +8,7 @@
 </head>
 
 <body>
-	<h1>Welcome to the bookmark manager</h1>
+	<h1>Welcome to bookmark manager:</h1>
 
 Current links:
 <ul>
@@ -17,14 +17,15 @@ Current links:
   <% end %>
 </ul>
 
-<div id="new-link">
-  <form action="/links" method="post">
-    Url: <input type="text" name="url">
-    Title: <input type="text" name="title">
-    Tags: <input type="text" name="tags">
-    <input type="submit" value="Add link">
-  </form>
-</div>
+    <div id="new-link">
+      <form action="/links" method="post">
+        Url: <input type="text" name="url">
+        Title: <input type="text" name="title">
+    	Tags: <input type="text" name="tags">
+        <input type="submit" value="Add link">
+      </form>
+    </div>
+
 </body>
 
 </html>
